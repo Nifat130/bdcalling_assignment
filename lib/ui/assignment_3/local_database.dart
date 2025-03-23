@@ -49,6 +49,21 @@ class _LocalDatabaseState extends State<LocalDatabase> {
                       width: double.infinity,
                       child: Text(state.msg, textAlign: TextAlign.center,style: TextStyle(color: Colors.redAccent, fontSize: 20),)
                   ),
+                  ValueListenableBuilder(
+                      valueListenable: Hive.box<LocalDatabaseModel>('cache').listenable(),
+                      builder: (context, box, _){
+                        var data = box.values.toList().cast<LocalDatabaseModel>();
+                        return ListView.builder(
+                          itemCount: box.length,
+                          itemBuilder: (context, index){
+                            return ListTile(
+                              title: Text("PostId: " + data[index].id.toString()),
+                              subtitle: Text("Body: " + data[index].body.toString()),
+                            );
+                          },
+                        );
+                      }
+                  ),
                 ],
               );
             }
